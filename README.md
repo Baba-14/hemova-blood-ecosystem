@@ -2,6 +2,8 @@
 
 Hemova is a blood-donation platform that helps communities connect with verified donation opportunities. It provides tailored experiences for donors, hospitals, blood banks, partner organizations, requesters, and administrators.
 
+![Hemova landing page](public/hemova-home.png)
+
 ## Features
 
 - Public landing, authentication, and onboarding flows
