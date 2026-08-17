@@ -1,0 +1,23 @@
+"use client";
+
+import { ArrowLeft, ArrowRight, Check, Eye, EyeOff, HeartHandshake, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
+import { FormEvent, useState } from "react";
+import { HemovaLogo } from "./hemova-logo";
+
+type AuthMode = "login" | "signup" | "forgot" | "reset";
+
+const content: Record<AuthMode, { eyebrow: string; title: string; copy: string; action: string }> = {
+  login: { eyebrow: "Welcome back", title: "Sign in to Hemova.", copy: "Continue your donation journey and see what’s nearby.", action: "Sign in" },
+  signup: { eyebrow: "Become a donor", title: "Start with a simple step.", copy: "Create your Hemova account. You’ll complete your donor profile next.", action: "Create account" },
+  forgot: { eyebrow: "Password help", title: "Reset your password.", copy: "Enter your email and we’ll send you a secure reset link.", action: "Send reset link" },
+  reset: { eyebrow: "Choose a new password", title: "Set a new password.", copy: "Choose a strong password you haven’t used elsewhere.", action: "Update password" },
+};
+
+export function AuthScreen({ mode }: { mode: AuthMode }) {
+ const [showPassword, setShowPassword] = useState(false); const [submitted, setSubmitted] = useState(false); const data = content[mode];
+ function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); if (mode === "login") window.location.assign("/dashboard"); if (mode === "signup") window.location.assign("/onboarding"); if (mode === "reset") window.location.assign("/login"); if (mode === "forgot") setSubmitted(true); }
+ if (submitted && mode === "forgot") return <AuthLayout><section className="auth-success"><span><Mail size={31}/></span><p className="dashboard-kicker">Check your inbox</p><h1>We’ve sent your reset link.</h1><p>If an account exists for that email, you’ll receive a link shortly. It expires for your security.</p><a href="/login" className="button">Back to sign in <ArrowRight size={17}/></a></section></AuthLayout>;
+ return <AuthLayout><section className="auth-card"><a className="auth-back" href="/"><ArrowLeft size={16}/> Back to Hemova</a><p className="dashboard-kicker">{data.eyebrow}</p><h1>{data.title}</h1><p className="auth-intro">{data.copy}</p><form onSubmit={submit}>{mode === "signup" && <label>Full name<input required autoComplete="name" placeholder="e.g. Akosua Mensah"/></label>} {mode !== "reset" && <label>Email address<input type="email" required autoComplete="email" placeholder="you@example.com"/></label>} {mode === "signup" && <label>Phone number<input type="tel" required autoComplete="tel" placeholder="+233 24 000 0000"/></label>} {mode !== "forgot" && <label>{mode === "reset" ? "New password" : "Password"}<span className="auth-password"><input type={showPassword ? "text" : "password"} required minLength={8} autoComplete={mode === "login" ? "current-password" : "new-password"} placeholder={mode === "reset" ? "Choose a new password" : "Your password"}/><button type="button" onClick={()=>setShowPassword(!showPassword)} aria-label="Show or hide password">{showPassword ? <EyeOff size={17}/> : <Eye size={17}/>}</button></span></label>} {mode === "reset" && <label>Confirm new password<input type={showPassword ? "text" : "password"} required minLength={8} autoComplete="new-password" placeholder="Repeat your new password"/></label>} {mode === "login" && <a href="/forgot-password" className="forgot-link">Forgot password?</a>} {mode === "signup" && <label className="terms-check"><input required type="checkbox"/><span>I agree to Hemova’s Terms and Privacy Policy.</span></label>}<button className="button auth-submit" type="submit">{data.action}<ArrowRight size={17}/></button></form>{mode === "login" && <p className="auth-switch">New to Hemova? <a href="/signup">Become a donor</a></p>}{mode === "signup" && <p className="auth-switch">Already have an account? <a href="/login">Sign in</a></p>}{mode === "reset" && <p className="auth-switch"><a href="/login">Return to sign in</a></p>}</section></AuthLayout>;
+}
+
+function AuthLayout({ children }: { children: React.ReactNode }) { return <main className="auth-page"><header><HemovaLogo/></header><div className="auth-layout"><div className="auth-brand-panel"><p className="dashboard-kicker">Voluntary. Verified. Protected.</p><h2>Giving blood should feel <em>simple and safe.</em></h2><p>Hemova helps you find verified opportunities and plan donation with confidence.</p><div><ShieldCheck size={19}/><span>Your information is private and you control your communication preferences.</span></div><div><HeartHandshake size={19}/><span>Final donation eligibility is always determined at the centre.</span></div></div>{children}</div></main>; }

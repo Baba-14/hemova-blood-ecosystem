@@ -1,0 +1,151 @@
+@media (prefers-reduced-motion: no-preference) {
+  a,
+  button,
+  input,
+  select,
+  textarea {
+    transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 220ms ease, opacity 180ms ease, transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  button:not(:disabled):active,
+  a.button:active,
+  .account-toggle:active {
+    transform: scale(0.975);
+  }
+
+  .button:not(:disabled):hover,
+  .icon-button:hover,
+  .profile-button:hover,
+  .app-nav-items a:hover,
+  .app-nav-bottom a:hover {
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .dashboard-title > div,
+  .feature-title > div,
+  .admin-welcome > div,
+  .institution-title {
+    animation: hemova-text-in 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .dashboard-metric,
+  .admin-kpi,
+  .admin-panel,
+  .auth-card,
+  .auth-brand-panel,
+  .request-card,
+  .notification-card,
+  .match-card,
+  .showcase-panel,
+  .audience,
+  .step,
+  .campaign-card,
+  .operational-card,
+  .fhir-card,
+  .institution-kpis article,
+  .eligibility-card,
+  .impact-summary,
+  .upcoming-module,
+  .campaign-module,
+  .notification-module,
+  .donor-campaign,
+  .reward-grid article,
+  .donate-actions button,
+  .donor-match-map,
+  .request-tracking,
+  .settings-panel,
+  .profile-layout > article,
+  .profile-layout > aside {
+    animation: hemova-card-in 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-copy > :is(.eyebrow, h1, p, .hero-buttons, .quiet-note),
+  .section-heading > :is(.eyebrow, h2, p),
+  .showcase-copy > :is(.eyebrow, h2, p, ul, .text-cta),
+  .campaign-heading > div > :is(.eyebrow, h2),
+  .campaign-content > :is(.verified, h3, p, .campaign-info, .button),
+  .feature-title > :is(p, h1),
+  .dashboard-title > :is(p, h1),
+  .institution-title > :is(p, h1),
+  .admin-header-title > :is(strong, span),
+  .auth-card > :is(.dashboard-kicker, h1, .auth-intro),
+  .operational-card > :is(h2, p),
+  .settings-panel :is(h2, h3, p, label),
+  .profile-layout :is(h2, h3, p, label) {
+    animation: hemova-text-in 560ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-copy > :nth-child(2),
+  .section-heading > :nth-child(2),
+  .showcase-copy > :nth-child(2),
+  .campaign-content > :nth-child(2),
+  .feature-title > :nth-child(2),
+  .dashboard-title > :nth-child(2),
+  .institution-title > :nth-child(2),
+  .auth-card > :nth-child(2) { animation-delay: 70ms; }
+  .hero-copy > :nth-child(3),
+  .section-heading > :nth-child(3),
+  .showcase-copy > :nth-child(3),
+  .campaign-content > :nth-child(3) { animation-delay: 130ms; }
+
+  .dashboard-metric:nth-child(2),
+  .donate-actions button:nth-child(2),
+  .reward-grid article:nth-child(2) { animation-delay: 70ms; }
+  .dashboard-metric:nth-child(3),
+  .donate-actions button:nth-child(3),
+  .reward-grid article:nth-child(3) { animation-delay: 130ms; }
+  .donate-actions button:nth-child(4) { animation-delay: 190ms; }
+  .donate-actions button:nth-child(5) { animation-delay: 250ms; }
+  .donate-actions button:nth-child(6) { animation-delay: 310ms; }
+
+  .dashboard-metric:hover,
+  .admin-kpi:hover,
+  .admin-panel:hover,
+  .operational-card:hover,
+  .fhir-card:hover,
+  .institution-kpis article:hover,
+  .request-card:hover,
+  .match-card:hover,
+  .notification-card:hover,
+  .showcase-panel:hover,
+  .audience:hover,
+  .step:hover,
+  .campaign-card:hover,
+  .donor-campaign:hover,
+  .reward-grid article:hover,
+  .donor-match-map:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px rgba(24, 33, 47, 0.09);
+  }
+
+  .map-marker {
+    animation: hemova-marker-pulse 2.8s ease-in-out infinite;
+  }
+
+  .map-marker.request { animation-delay: 500ms; }
+  .map-marker.campaign { animation-delay: 1s; }
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--primary) 28%, transparent);
+  outline-offset: 3px;
+}
+
+@keyframes hemova-card-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes hemova-text-in {
+  from { opacity: 0; transform: translateY(10px); letter-spacing: -0.02em; }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hemova-marker-pulse {
+  0%, 100% { transform: translateY(0); box-shadow: 0 4px 12px rgba(24, 33, 47, 0.16); }
+  50% { transform: translateY(-4px); box-shadow: 0 9px 18px rgba(211, 28, 76, 0.22); }
+}

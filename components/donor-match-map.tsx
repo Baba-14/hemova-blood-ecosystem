@@ -1,0 +1,5 @@
+import { Building2, MapPin, TentTree } from "lucide-react";
+
+export function DonorMatchMap({ compact = false }: { compact?: boolean }) {
+  return <section className={`donor-match-map${compact ? " donor-match-map-compact" : ""}`} aria-label="Nearby donation opportunities map"><div className="donor-match-map-head"><div><p className="dashboard-kicker">Nearby & upcoming</p><h2>Donation opportunities near you</h2></div><button type="button">List view</button></div><div className="donor-map-canvas"><span className="map-marker centre"><Building2 size={15}/><i>National Blood Service</i></span><span className="map-marker request"><MapPin size={15}/><i>O− request · 4.8 km</i></span><span className="map-marker campaign"><TentTree size={15}/><i>Blood drive · Osu</i></span><div className="map-legend"><span><i className="centre"/>Centre</span><span><i className="request"/>Blood request</span><span><i className="campaign"/>Campaign</span></div></div><p className="donor-map-note">Approximate facility locations only. Donor locations are never shown.</p></section>;
+}

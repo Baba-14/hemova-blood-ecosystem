@@ -1,0 +1,59 @@
+/* Public landing campaign artwork: brand-color gradient only. */
+body:has(main#top) {
+  --bg: #f7f8fa;
+}
+
+.nav-wrap {
+  top: 0 !important;
+  width: 100% !important;
+  margin: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.82) !important;
+  border-radius: 0 !important;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.48)) !important;
+  box-shadow: 0 20px 46px rgba(24, 33, 47, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  will-change: transform, opacity;
+  transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1), opacity 360ms ease-out;
+}
+
+.nav-wrap.nav-hidden {
+  transform: translateY(-105%);
+  opacity: 0;
+}
+
+.nav-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, rgba(255, 255, 255, 0.42), transparent 38%, rgba(255, 255, 255, 0.16));
+}
+
+.nav-wrap .nav,
+.nav-wrap .mobile-menu {
+  position: relative;
+  z-index: 1;
+}
+
+.trust-strip {
+  background: var(--primary) !important;
+}
+
+.safety,
+.dark .safety {
+  background: var(--primary) !important;
+}
+
+.safety h2 em,
+.light-eyebrow,
+.safety-points svg {
+  color: #fff !important;
+}
+
+.campaign-photo {
+  background:
+    radial-gradient(circle at 16% 18%, color-mix(in srgb, var(--primary) 34%, #fff) 0%, transparent 46%),
+    radial-gradient(circle at 85% 88%, color-mix(in srgb, var(--primary) 72%, #18212f) 0%, transparent 56%),
+    linear-gradient(135deg, color-mix(in srgb, var(--primary) 78%, #fff) 0%, var(--primary) 52%, color-mix(in srgb, var(--primary) 82%, #18212f) 100%);
+}
