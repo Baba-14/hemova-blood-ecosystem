@@ -1,155 +1,44 @@
 "use client";
 
-import {
-  CalendarDays,
-  Check,
-  ClipboardCheck,
-  HeartHandshake,
-  MapPin,
-  ShieldCheck,
-  Ticket,
-} from "lucide-react";
+import { CalendarDays, Check, List, MapPin, Navigation, Search, ShieldCheck } from "lucide-react";
 import { useState } from "react";
-import { DonorMatchMap } from "./donor-match-map";
 
-export function DonorDonate() {
-  return (
-    <main className="app-shell">
-      <section className="dashboard-main">
-        <div className="feature-title">
-          <div>
-            <p className="dashboard-kicker">Donation journey</p>
-            <h1>Donate</h1>
-            <p>Plan, prepare, and book your donation in one place.</p>
-          </div>
-        </div>
-        <DonateHub />
-      </section>
-    </main>
-  );
-}
-const donationFeatures = [
-  {
-    id: "book",
-    icon: CalendarDays,
-    title: "Book a donation",
-    description: "Choose an available time at a verified donation centre.",
-    action: "Choose a time",
-  },
-  {
-    id: "prepare",
-    icon: ClipboardCheck,
-    title: "Prepare for your visit",
-    description: "Complete your pre-donation questionnaire before you travel.",
-    action: "Start questionnaire",
-  },
-  {
-    id: "matches",
-    icon: ShieldCheck,
-    title: "View verified matches",
-    description: "Review nearby requests that may be relevant to you.",
-    action: "Review matches",
-  },
-  {
-    id: "centres",
-    icon: MapPin,
-    title: "Find a donation centre",
-    description: "Explore approved centres and their opening times near you.",
-    action: "View nearby centres",
-  },
-  {
-    id: "campaigns",
-    icon: HeartHandshake,
-    title: "Join a blood drive",
-    description: "Reserve a place at an upcoming community donation campaign.",
-    action: "View blood drives",
-  },
-  {
-    id: "history",
-    icon: Ticket,
-    title: "My donations",
-    description: "Review your confirmed donation history and impact.",
-    action: "View donation history",
-  },
+const centres = [
+  ["Korle Bu Teaching Hospital", "4.2 km away", "Closes 6:00 PM"],
+  ["Ridge Hospital", "5.6 km away", "Closes 7:00 PM"],
+  ["37 Military Hospital", "7.3 km away", "Closes 5:00 PM"],
 ] as const;
 
-export function DonateHub() {
-  const [activeFeature, setActiveFeature] =
-    useState<(typeof donationFeatures)[number]["id"]>("book");
-  const [completed, setCompleted] = useState(false);
-  const active = donationFeatures.find(
-    (feature) => feature.id === activeFeature,
-  )!;
-  const ActiveIcon = active.icon;
+export function DonorDonate() { return <DonateHub />; }
 
-  return (
-    <section className="donate-hub">
-      <div className="donate-intro">
-        <div>
-          <p className="dashboard-kicker">Donation journey</p>
-          <h2>Choose your next helpful step.</h2>
-          <p>
-            Plan a safe visit, find a nearby opportunity, and keep your donation
-            record in one place.
-          </p>
-        </div>
-        <button
-          className="button"
-          type="button"
-          onClick={() => setActiveFeature("book")}
-        >
-          <CalendarDays size={16} /> Book a donation
-        </button>
+export function DonateHub() {
+  const [booked, setBooked] = useState<string | null>(null);
+  return <section className="donate-workspace">
+    <div className="donate-tabs" role="tablist" aria-label="Donation options">
+      <button className="active" role="tab" aria-selected="true"><MapPin size={15} /> Donation centres</button>
+      <button role="tab" aria-selected="false"><Search size={15} /> Blood requests</button>
+      <button role="tab" aria-selected="false"><CalendarDays size={15} /> Blood drives</button>
+    </div>
+    <div className="donate-toolbar">
+      <label className="toolbar-search"><Search size={15} /><input defaultValue="Accra, Ghana" aria-label="Search location" /></label>
+      <button className="toolbar-select">Within 20 km <span>⌄</span></button><button className="toolbar-filter">Filters</button>
+      <button className="toolbar-view"><List size={14} /> List view</button><button className="toolbar-view active"><MapPin size={14} /> Map view</button>
+    </div>
+    <div className="donate-layout">
+      <div className="centre-list-card">
+        <div className="workspace-card-heading"><div><p className="dashboard-kicker">Verified nearby</p><h2>Donation centres</h2></div><button className="text-link">View all</button></div>
+        {centres.map(([name, distance, closing], index) => <article className="centre-result" key={name}>
+          <span className={`centre-thumb centre-thumb-${index}`} aria-hidden="true" />
+          <div className="centre-result-copy"><div className="verified-line"><strong>{name}</strong><small><ShieldCheck size={11} /> Verified</small></div><p>{distance} <i>·</i> Accra</p><b className={index === 2 ? "closing" : "open"}>Open now <i>·</i> {closing}</b></div>
+          <div className="centre-result-actions"><button className="button" onClick={() => setBooked(name)}>{booked === name ? <><Check size={14} /> Booked</> : <><CalendarDays size={14} /> Book appointment</>}</button><button className="button button-secondary">View details</button></div>
+        </article>)}
+        <button className="view-more-link">View more centres <span>⌄</span></button>
       </div>
-      <div className="donate-actions">
-        {donationFeatures.map(({ id, icon: Icon, title, description }) => (
-          <button
-            type="button"
-            className={activeFeature === id ? "active" : ""}
-            onClick={() => {
-              setActiveFeature(id);
-              setCompleted(false);
-            }}
-            aria-pressed={activeFeature === id}
-            key={id}
-          >
-            <Icon size={20} />
-            <div>
-              <strong>{title}</strong>
-              <span>{description}</span>
-            </div>
-          </button>
-        ))}
+      <div className="donate-map-panel">
+        <div className="map-placeholder" aria-label="Map showing donation centres near Accra"><span className="map-road road-one" /><span className="map-road road-two" /><span className="map-water" /><span className="map-city">Accra</span><span className="map-pin user-pin"><Navigation size={14} /></span><span className="map-pin centre-pin pin-one"><MapPin size={16} /></span><span className="map-pin centre-pin pin-two"><MapPin size={16} /></span><span className="map-pin centre-pin pin-three"><MapPin size={16} /></span><div className="map-zoom"><button>+</button><button>−</button></div></div>
+        <div className="book-donation-card"><div><p className="dashboard-kicker">Next step</p><h2>Book your donation</h2><p>Select a centre and choose a date and time that works for you.</p></div><button className="button button-secondary">How it works</button></div>
       </div>
-      <section className="donate-feature-detail">
-        <span>
-          <ActiveIcon size={24} />
-        </span>
-        <div>
-          <p className="dashboard-kicker">{active.title}</p>
-          <h3>{active.action}</h3>
-          <p>{active.description}</p>
-        </div>
-        <button
-          className="button"
-          type="button"
-          onClick={() => setCompleted(true)}
-        >
-          {completed ? (
-            <>
-              <Check size={16} /> Ready
-            </>
-          ) : (
-            active.action
-          )}
-        </button>
-        {completed && (
-          <p className="donate-feature-confirmation">
-            <Check size={15} /> Saved in your donation journey.
-          </p>
-        )}
-      </section>
-      <DonorMatchMap />
-    </section>
-  );
+    </div>
+    <div className="donate-safety"><ShieldCheck size={16} /><span>Centre locations are verified. Final eligibility is determined by the healthcare team at your appointment.</span></div>
+  </section>;
 }

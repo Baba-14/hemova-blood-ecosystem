@@ -149,3 +149,59 @@ textarea:focus-visible {
   0%, 100% { transform: translateY(0); box-shadow: 0 4px 12px rgba(24, 33, 47, 0.16); }
   50% { transform: translateY(-4px); box-shadow: 0 9px 18px rgba(211, 28, 76, 0.22); }
 }
+/* One-time, viewport-triggered entrance motion. The component owns timing; this
+   CSS keeps the effect subtle and leaves layout, sizing, and hover motion alone. */
+.scroll-reveal,
+.scroll-stagger > * {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-distance, 28px), 0);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal {
+  transition: opacity 760ms cubic-bezier(0.22, 1, 0.36, 1), transform 760ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.scroll-reveal.is-visible,
+.scroll-stagger.is-visible > * {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.scroll-stagger > * {
+  transition: opacity 700ms cubic-bezier(0.22, 1, 0.36, 1), transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.scroll-stagger.is-visible > *:nth-child(1) { transition-delay: 0ms; }
+.scroll-stagger.is-visible > *:nth-child(2) { transition-delay: 80ms; }
+.scroll-stagger.is-visible > *:nth-child(3) { transition-delay: 160ms; }
+.scroll-stagger.is-visible > *:nth-child(4) { transition-delay: 240ms; }
+.scroll-stagger.is-visible > *:nth-child(5) { transition-delay: 320ms; }
+.scroll-stagger.is-visible > *:nth-child(6) { transition-delay: 400ms; }
+
+.word-reveal-word {
+  display: inline-block;
+  margin-right: 0.27em;
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition: opacity 680ms cubic-bezier(0.22, 1, 0.36, 1), transform 680ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.word-reveal-word:last-child { margin-right: 0; }
+
+.word-reveal.is-visible .word-reveal-word {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal,
+  .scroll-stagger > *,
+  .word-reveal-word {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

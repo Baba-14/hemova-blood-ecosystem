@@ -26,6 +26,7 @@ import { DonorAccountFooter } from "./donor-account-footer";
 import { DonorSignoutLink } from "./donor-signout-link";
 import { DonateHub } from "./donor-donate";
 import { RequestHub } from "./donor-request";
+import { ScrollReveal } from "./scroll-reveal";
 
 type Feature =
   | "donate"
@@ -120,7 +121,7 @@ export function DonorFeaturePage({ page }: { page: Feature }) {
           <MapPin size={17} />
           <input
             aria-label="Search donor workspace"
-            placeholder="Search campaigns, requests or centres"
+            placeholder="Search for hospitals, campaigns, blood drives..."
           />
         </div>
         <div className="app-header-actions">
@@ -138,7 +139,7 @@ export function DonorFeaturePage({ page }: { page: Feature }) {
           </a>
         </div>
       </header>
-      <section className="dashboard-main donor-feature-main">
+      <section className={`dashboard-main donor-feature-main feature-page-${page}`}>
         <div className="feature-title">
           <div>
             <p className="dashboard-kicker">Hemova donor</p>
@@ -165,6 +166,7 @@ export function DonorFeaturePage({ page }: { page: Feature }) {
             </span>
           </div>
         )}
+        <ScrollReveal className="feature-content-reveal">
         {page === "donate" && <DonateHub />}
         {page === "request" && <RequestHub />}
         {page === "campaigns" && (
@@ -182,6 +184,7 @@ export function DonorFeaturePage({ page }: { page: Feature }) {
         {page === "profile" && <Profile />}
         {page === "settings" && <SettingsPanel />}
         {page === "history" && <History />}
+        </ScrollReveal>
       </section>
       <nav className="bottom-tabs">
         {nav.map(([href, label, Icon]) => (
@@ -321,42 +324,12 @@ function Appointments({
 }
 function Rewards() {
   const [view, setView] = useState<"rewards" | "certificates">("rewards");
-  return (
-    <>
-      <section className="points-hero">
-        <div>
-          <p className="dashboard-kicker">Your recognition</p>
-          <strong>240</strong>
-          <span>Hemova Points</span>
-          <p>
-            Points recognize participation. They never represent payment for
-            blood.
-          </p>
-        </div>
-        <Medal size={72} />
-      </section>
-      <div className="dashboard-switch rewards-switch" role="tablist" aria-label="Rewards view"><button className={view === "rewards" ? "active" : ""} onClick={() => setView("rewards")} role="tab" aria-selected={view === "rewards"}>Rewards</button><button className={view === "certificates" ? "active" : ""} onClick={() => setView("certificates")} role="tab" aria-selected={view === "certificates"}>Certificates</button></div>
-      {view === "rewards" ? <section className="reward-grid">
-        {[
-          ["GHS 15 ride support", "Move Ghana", "120 points"],
-          ["Wellness check", "MedPharm Osu", "180 points"],
-          ["Healthy meal voucher", "Nourish Accra", "150 points"],
-        ].map(([reward, partner, cost]) => (
-          <article key={reward}>
-            <span>
-              <GiftIcon />
-            </span>
-            <p>{partner}</p>
-            <h2>{reward}</h2>
-            <footer>
-              <b>{cost}</b>
-              <button>View reward</button>
-            </footer>
-          </article>
-        ))}
-      </section> : <section className="certificate-list rewards-certificate-list">{[["24 March 2026", "National Blood Service, Korle Bu", "HMO-2026-0317"], ["09 December 2025", "Ridge Hospital", "HMO-2025-0904"]].map(([date, facility, id]) => <article key={id}><span><Ticket size={20}/></span><div><h2>Donation certificate</h2><p>{date} · {facility}</p><small>Verified · Certificate ID: {id}</small></div><button className="button button-secondary">View & download</button></article>)}</section>}
-    </>
-  );
+  const [redeemed, setRedeemed] = useState<string | null>(null);
+  return <>
+    <section className="rewards-summary"><div className="points-balance"><p className="dashboard-kicker">Hemova Points Balance</p><strong>1,450</strong><span>Keep donating, keep saving lives.</span><button className="points-history">View points history</button></div><div className="points-stat-grid"><div><span>Lifetime points earned</span><strong>2,350</strong></div><div><span>Points redeemed</span><strong>900</strong></div><div><span>Available points</span><strong>1,450 <Medal size={18} /></strong></div></div></section>
+    <div className="rewards-view-tabs" role="tablist" aria-label="Rewards view"><button className={view === "rewards" ? "active" : ""} onClick={() => setView("rewards")} role="tab" aria-selected={view === "rewards"}><Medal size={14} /> Rewards</button><button className={view === "certificates" ? "active" : ""} onClick={() => setView("certificates")} role="tab" aria-selected={view === "certificates"}><Ticket size={14} /> Certificates</button></div>
+    {view === "rewards" ? <div className="rewards-content-grid"><section><div className="workspace-card-heading"><div><p className="dashboard-kicker">Redeem your points</p><h2>Available rewards</h2></div><button className="text-link">View all rewards</button></div><div className="rewards-catalog">{[["Ghana Gas", "GHS 50 Gas Voucher", "500 points"], ["YANGO", "Yango Ride Voucher", "800 points"], ["Uber", "Uber Ride Voucher", "800 points"], ["Melcom", "Melcom Voucher", "1,200 points"], ["Zeepay", "Zeepay Cash Voucher", "1,500 points"]].map(([partner, reward, cost]) => <article key={reward}><div className="reward-brand">{partner}</div><h3>{reward}</h3><b>{cost}</b><small><Clock3 size={11} /> Valid for 60 days</small><button className="button" onClick={() => setRedeemed(reward)}>{redeemed === reward ? <><Check size={13} /> Redeemed</> : "Redeem"}</button></article>)}</div></section><section className="redemptions-card"><div className="workspace-card-heading"><h2>Recent redemptions</h2><button className="text-link">View all</button></div>{[["YANGO","Yango Ride Voucher","800 points","Used","10 May 2026"],["Melcom","Melcom Voucher","1,200 points","Redeemed","02 Apr 2026"],["Uber","Uber Ride Voucher","800 points","Expired","15 Feb 2026"]].map(([brand,name,cost,status,date]) => <article key={name}><div className="mini-brand">{brand}</div><div><strong>{name}</strong><p>{cost}</p></div><div><b className={`redemption-status ${status.toLowerCase()}`}>{status}</b><small>{date}</small></div></article>)}</section></div> : <section className="certificate-list rewards-certificate-list">{[["24 March 2026", "National Blood Service, Korle Bu", "HMO-2026-0317"], ["09 December 2025", "Ridge Hospital", "HMO-2025-0904"]].map(([date, facility, id]) => <article key={id}><span><Ticket size={20}/></span><div><h2>Donation certificate</h2><p>{date} · {facility}</p><small>Verified · Certificate ID: {id}</small></div><button className="button button-secondary">View & download</button></article>)}</section>}
+  </>;
 }
 function Notifications() {
   return (

@@ -40,6 +40,41 @@ body:has(main#top) {
   background: var(--primary) !important;
 }
 
+.hero-dynamic-copy {
+  min-height: 215px;
+}
+
+.hero-visual-state { position:relative; width:100%; height:100%; display:grid; place-items:center; }
+.hero-state-card { position:relative; z-index:2; width:min(100%,365px); min-height:285px; padding:25px; display:flex; flex-direction:column; justify-content:center; border:1px solid var(--border); border-radius:20px; background:var(--surface); box-shadow:var(--shadow); animation:hero-main-flow 920ms cubic-bezier(.22,1,.36,1) both; }
+.hero-state-card>.request-card { width:100%; padding:0; border:0; box-shadow:none; }
+.hero-state-card>strong { margin-top:10px; color:var(--text); font:800 28px/.95 var(--font-manrope); letter-spacing:-.06em; }
+.hero-state-card>small { margin-top:8px; color:var(--muted); font-size:11px; line-height:1.45; }
+.hero-state-label { margin:16px 0 0; color:var(--primary); font-size:10px; font-weight:800; letter-spacing:.8px; text-transform:uppercase; }
+.hero-state-icon { width:48px; height:48px; display:grid; place-items:center; border-radius:14px; background:var(--soft); color:var(--primary); }.hero-state-icon svg { width:24px; }.hero-state-icon.gold { color:#c98509; background:#fff5dd; }.hero-state-icon.green { color:#16835a; background:#e8f7ef; }.hero-state-icon.purple { color:#8554d4; background:#f1eafe; }.hero-state-icon.blue { color:#2670a9; background:#eaf4fd; }
+.hero-state-progress { height:7px; margin-top:20px; overflow:hidden; border-radius:10px; background:#f1f3f5; }.hero-state-progress span { display:block; width:62%; height:100%; border-radius:inherit; background:var(--primary); }.hero-state-card>b { margin-top:8px; color:var(--muted); font-size:10px; }.hero-state-code { display:grid; gap:7px; margin-top:17px; padding:11px; border-radius:10px; color:#475467; background:#f8fafc; font-size:10px; line-height:1.35; }.hero-state-code span { display:inline-grid; place-items:center; width:18px; height:18px; margin-right:6px; border-radius:50%; color:#fff; background:#16835a; font-size:9px; }.hero-match-meter { display:flex; gap:5px; margin-top:18px; }.hero-match-meter span { height:7px; flex:1; border-radius:10px; background:#8554d4; }.hero-match-meter span:last-child { opacity:.25; }.hero-fhir-row { display:flex; align-items:center; gap:6px; margin-top:19px; color:#475467; font-size:9px; }.hero-fhir-row i { width:20px; height:1px; background:#9cb8cb; }.hero-ecosystem { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:19px; }.hero-ecosystem span { padding:8px 4px; border:1px solid #f0d0d8; border-radius:8px; color:var(--primary); background:#fff8fa; text-align:center; font-size:8px; font-weight:800; }
+@keyframes hero-state-in { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+@keyframes hero-main-flow { from { opacity:0; transform:translateY(30px) scale(.97); } to { opacity:1; transform:translateY(0) scale(1); } }
+@keyframes hero-satellite-top { from { opacity:0; transform:translate(22px,28px) scale(.94); } to { opacity:1; transform:translate(0,0) scale(1); } }
+@keyframes hero-satellite-bottom { from { opacity:0; transform:translate(-22px,-26px) scale(.94); } to { opacity:1; transform:translate(0,0) scale(1); } }
+
+@media (prefers-reduced-motion: reduce) { .hero-visual-state { animation:none; } }
+
+/* Keep the primary care card visible while the surrounding context changes. */
+.hero-visual .notification-card { top: 10px; right: 2px; z-index: 1; animation:hero-satellite-top 760ms 500ms cubic-bezier(.22,1,.36,1) both; }
+.hero-visual .match-card { bottom: 8px; left: 2px; z-index: 1; animation:hero-satellite-bottom 760ms 700ms cubic-bezier(.22,1,.36,1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-state-card,
+  .hero-visual .notification-card,
+  .hero-visual .match-card { animation: hero-reduced-crossfade 220ms ease-out both; }
+}
+
+@keyframes hero-reduced-crossfade { from { opacity:0; } to { opacity:1; } }
+
+@media (max-width: 760px) {
+  .hero-dynamic-copy { min-height: 285px; }
+}
+
 .safety,
 .dark .safety {
   background: var(--primary) !important;
