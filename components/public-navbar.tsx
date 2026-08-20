@@ -8,23 +8,17 @@ const links = ["How it works", "Donate", "Blood requests", "Campaigns", "For hos
 
 export function PublicNavbar() {
   const [open, setOpen] = useState(false);
-  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    let previousScrollPosition = window.scrollY;
-
-    const handleScroll = () => {
-      const currentScrollPosition = window.scrollY;
-      setHidden(currentScrollPosition > 96 && currentScrollPosition > previousScrollPosition);
-      previousScrollPosition = currentScrollPosition;
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 18);
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <header className={`nav-wrap${hidden ? " nav-hidden" : ""}`}>
+    <header className={`nav-wrap${scrolled ? " nav-scrolled" : ""}`}>
       <nav className="nav container" aria-label="Main navigation">
         <HemovaLogo />
         <div className="nav-links">{links.map((link) => <a href={`#${link.toLowerCase().replaceAll(" ", "-")}`} key={link}>{link}</a>)}</div>

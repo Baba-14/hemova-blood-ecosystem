@@ -154,12 +154,12 @@ textarea:focus-visible {
 .scroll-reveal,
 .scroll-stagger > * {
   opacity: 0;
-  transform: translate3d(0, var(--reveal-distance, 28px), 0);
+  transform: translate3d(0, var(--reveal-distance, 38px), 0);
   will-change: opacity, transform;
 }
 
 .scroll-reveal {
-  transition: opacity 760ms cubic-bezier(0.22, 1, 0.36, 1), transform 760ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 920ms cubic-bezier(0.22, 1, 0.36, 1), transform 920ms cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
@@ -169,16 +169,91 @@ textarea:focus-visible {
   transform: translate3d(0, 0, 0);
 }
 
+.app-motion-root { min-height:100%; }
+
+/* App routes: reveal the shell sections in sequence after the route enters. */
+.app-motion-root:not(:has(main#top)).is-visible > main > * {
+  animation: hemova-app-section-in 820ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.app-motion-root:not(:has(main#top)).is-visible > main > *:nth-child(1) { animation-delay:40ms; }
+.app-motion-root:not(:has(main#top)).is-visible > main > *:nth-child(2) { animation-delay:120ms; }
+.app-motion-root:not(:has(main#top)).is-visible > main > *:nth-child(3) { animation-delay:200ms; }
+.app-motion-root:not(:has(main#top)).is-visible > main > *:nth-child(4) { animation-delay:280ms; }
+.app-motion-root:not(:has(main#top)).is-visible > main > *:nth-child(5) { animation-delay:360ms; }
+
+@keyframes hemova-app-section-in {
+  from { opacity:0; transform:translate3d(0, 24px, 0); }
+  to { opacity:1; transform:translate3d(0, 0, 0); }
+}
+
+/* Landing sections: make the internal content reveal visibly, not as one block. */
+body:has(main#top) .scroll-reveal.is-visible > .container > .section-heading,
+body:has(main#top) .scroll-reveal.is-visible > .container > .showcase-grid,
+body:has(main#top) .scroll-reveal.is-visible > .container > .campaign-heading,
+body:has(main#top) .scroll-reveal.is-visible > .container > .campaign-card,
+body:has(main#top) .scroll-reveal.is-visible > .container > .safety-grid,
+body:has(main#top) .scroll-reveal.is-visible > .container > .footer-inner,
+body:has(main#top) .scroll-reveal.is-visible > .container > .hero-buttons,
+body:has(main#top) .scroll-reveal.is-visible > .container > .quiet-note {
+  animation: hemova-landing-content-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+body:has(main#top) .scroll-reveal.is-visible > .container > .campaign-card,
+body:has(main#top) .scroll-reveal.is-visible > .container > .showcase-grid,
+body:has(main#top) .scroll-reveal.is-visible > .container > .safety-grid { animation-delay:140ms; }
+
+/* Landing-page motion is scroll-triggered only; prevent the legacy load-time
+   card animations from firing before their section enters the viewport. */
+body:has(main#top) .showcase-panel,
+body:has(main#top) .audience,
+body:has(main#top) .step,
+body:has(main#top) .campaign-card { animation:none; }
+
+@keyframes hemova-landing-content-in {
+  from { opacity:0; transform:translate3d(0, 34px, 0); }
+  to { opacity:1; transform:translate3d(0, 0, 0); }
+}
+
 .scroll-stagger > * {
-  transition: opacity 700ms cubic-bezier(0.22, 1, 0.36, 1), transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 860ms cubic-bezier(0.22, 1, 0.36, 1), transform 860ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* The public landing page uses ScrollReveal/StaggerReveal as its only
+   entrance trigger. Disable the older route-load keyframes there so content
+   cannot animate before the user reaches its section. */
+@media (prefers-reduced-motion: no-preference) {
+  body:has(main#top) .dashboard-title > div,
+  body:has(main#top) .feature-title > div,
+  body:has(main#top) .admin-welcome > div,
+  body:has(main#top) .institution-title,
+  body:has(main#top) .dashboard-metric,
+  body:has(main#top) .admin-kpi,
+  body:has(main#top) .admin-panel,
+  body:has(main#top) .auth-card,
+  body:has(main#top) .auth-brand-panel,
+  body:has(main#top) .request-card,
+  body:has(main#top) .notification-card,
+  body:has(main#top) .match-card,
+  body:has(main#top) .showcase-panel,
+  body:has(main#top) .audience,
+  body:has(main#top) .step,
+  body:has(main#top) .campaign-card,
+  body:has(main#top) .hero-copy > :is(.eyebrow, h1, p, .hero-buttons, .quiet-note),
+  body:has(main#top) .section-heading > :is(.eyebrow, h2, p),
+  body:has(main#top) .showcase-copy > :is(.eyebrow, h2, p, ul, .text-cta),
+  body:has(main#top) .campaign-heading > div > :is(.eyebrow, h2),
+  body:has(main#top) .campaign-content > :is(.verified, h3, p, .campaign-info, .button) {
+    animation: none !important;
+  }
 }
 
 .scroll-stagger.is-visible > *:nth-child(1) { transition-delay: 0ms; }
-.scroll-stagger.is-visible > *:nth-child(2) { transition-delay: 80ms; }
-.scroll-stagger.is-visible > *:nth-child(3) { transition-delay: 160ms; }
-.scroll-stagger.is-visible > *:nth-child(4) { transition-delay: 240ms; }
-.scroll-stagger.is-visible > *:nth-child(5) { transition-delay: 320ms; }
-.scroll-stagger.is-visible > *:nth-child(6) { transition-delay: 400ms; }
+.scroll-stagger.is-visible > *:nth-child(2) { transition-delay: 120ms; }
+.scroll-stagger.is-visible > *:nth-child(3) { transition-delay: 240ms; }
+.scroll-stagger.is-visible > *:nth-child(4) { transition-delay: 360ms; }
+.scroll-stagger.is-visible > *:nth-child(5) { transition-delay: 480ms; }
+.scroll-stagger.is-visible > *:nth-child(6) { transition-delay: 600ms; }
 
 .word-reveal-word {
   display: inline-block;
@@ -203,5 +278,13 @@ textarea:focus-visible {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .app-motion-root:not(:has(main#top)).is-visible > main > * {
+    animation:none;
+  }
+
+  body:has(main#top) .scroll-reveal.is-visible > .container > * {
+    animation:none;
   }
 }

@@ -22,6 +22,7 @@ import { useState } from "react";
 import { HemovaLogo } from "./hemova-logo";
 import { DonorAccountFooter } from "./donor-account-footer";
 import { DonorSignoutLink } from "./donor-signout-link";
+import { ScrollReveal } from "./scroll-reveal";
 
 type Tab = "pre-donation" | "matches" | "centres" | "certificates";
 export function DonorOperationalTab({ tab }: { tab: Tab }) {
@@ -55,7 +56,7 @@ export function DonorOperationalTab({ tab }: { tab: Tab }) {
           ? "Donation centres near you"
           : "Your certificates";
   return (
-    <main className="app-shell donor-unified">
+    <ScrollReveal as="main" className="app-shell donor-unified">
       <aside className="app-sidebar">
         <HemovaLogo />
         <div className="app-nav-items donor-full-nav">
@@ -251,6 +252,6 @@ export function DonorOperationalTab({ tab }: { tab: Tab }) {
           )}
         </div>
       </section>
-    </main>
+    </ScrollReveal>
   );
 }

@@ -29,7 +29,7 @@ function useReveal() {
       if (!entry.isIntersecting) return;
       setVisible(true);
       observer.unobserve(entry.target);
-    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    }, { threshold: 0.12, rootMargin: "0px 0px -12% 0px" });
     observer.observe(element);
     return () => observer.disconnect();
   }, []);
@@ -37,7 +37,7 @@ function useReveal() {
   return { ref, visible };
 }
 
-export function ScrollReveal({ children, className = "", delay = 0, distance = 28, as: Component = "div", id }: RevealProps) {
+export function ScrollReveal({ children, className = "", delay = 0, distance = 38, as: Component = "div", id }: RevealProps) {
   const { ref, visible } = useReveal();
   const style: RevealStyle = { "--reveal-delay": `${delay}ms`, "--reveal-distance": `${distance}px` };
   return <Component ref={ref} id={id} className={`scroll-reveal ${visible ? "is-visible" : ""} ${className}`} style={style}>{children}</Component>;
